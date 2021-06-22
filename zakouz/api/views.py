@@ -21,6 +21,18 @@ class CourseViewSet(viewsets.ModelViewSet):
 class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            data = serializer.validated_data
+            print(data)
+            group = Group.objects.create(group_name=data.get('group_name'),
+                                         time=data.get('time'),
+                                         course=data.get('course'),
+                                         start_date=data.get('start_date'))
+            group.make_attantion()
+            group.save()
+            return Response({"status": "Group Created"}, status=status.HTTP_201_CREATED)
 class GroupByCourseViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
@@ -42,6 +54,19 @@ class GroupByCourseViewSet(viewsets.ModelViewSet):
 class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            data = serializer.validated_data
+            print(data)
+            student = Student.objects.create(full_name=data.get('full_name'),
+                                         group=data.get('group'),
+                                         phone=data.get('phone'),
+                                         email=data.get('email'),
+                                         image=data.get('image'),
+                                         description=data.get('description'))
+            student.save()
+            return Response({"status": "Group Created"}, status=status.HTTP_201_CREATED)
 class StudentByGroupViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
@@ -91,3 +116,6 @@ class PaymentByStudentViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_404_NOT_FOUND)
     def destroy(self, request, *args, **kwargs):
         return Response(status=status.HTTP_404_NOT_FOUND)
+class LessonViewSet(viewsets.ModelViewSet):
+    queryset = Lesson.objects.all()
+    serializer_class = LessonSerializer
