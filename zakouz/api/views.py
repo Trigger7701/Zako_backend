@@ -121,48 +121,50 @@ class PaymentByStudentViewSet(viewsets.ModelViewSet):
 class LessonViewSet(viewsets.ModelViewSet):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
-
 class AttantionViewSet(viewsets.ModelViewSet):
     queryset = Attantion.objects.all()
     serializer_class = LessonSerializer
     def retrieve(self, request, *args, **kwargs):
-        print(self.args,self.kwargs)
-        id = int(str(self.kwargs['pk']).split(',')[0])
-        print(id)
-        datas = []
-        student_datas = []
-        if id:
-            group = Group.objects.get(id=id)
-            attantion = Attantion.objects.get(group=group)
-            lessons = Lesson.objects.filter(attantion_id=attantion.id)
-            students = Student.objects.filter(group=group)
-            for lesson in lessons:
-                d = dict()
-                d['dateuid'] = lesson.id
-                d['key'] = lesson.id
-                d['date'] = lesson.date
-                print(d)
-                datas.append(d)
-            for student in students:
-                s = dict()
-                s['id']=student.id
-                s['key']=student.id
-                s['full_name']=student.full_name
-                student_lessons = StudentsLesson.objects.filter(student=student)
-                st_lesson = []
-                for student_lesson in student_lessons:
-                    sl = dict()
-                    sl['uid'] = student_lesson.id
-                    sl['student_id'] = student.id
-                    sl['lesson_id'] = student_lesson.lesson.id
-                    sl['absence'] = student_lesson.absence
-                    sl['key'] = student_lesson.id
-                    st_lesson.append(sl)
-                s['checkdates'] = st_lesson
-                student_datas.append(s)
-        d = {'columns':datas,'data':student_datas}
-            # print(lessons)
-        serializer = self.get_serializer(attantion)
-        serializer.data.update(d)
-        print(d)
-        return Response(d)
+        try:
+            print(self.args,self.kwargs)
+            id = int(str(self.kwargs['pk']).split(',')[0])
+            print(id)
+            datas = []
+            student_datas = []
+            if id:
+                group = Group.objects.get(id=id)
+                attantion = Attantion.objects.get(group=group)
+                lessons = Lesson.objects.filter(attantion_id=attantion.id)
+                students = Student.objects.filter(group=group)
+                for lesson in lessons:
+                    d = dict()
+                    d['dateuid'] = lesson.id
+                    d['key'] = lesson.id
+                    d['date'] = lesson.date
+                    print(d)
+                    datas.append(d)
+                for student in students:
+                    s = dict()
+                    s['id']=student.id
+                    s['key']=student.id
+                    s['full_name']=student.full_name
+                    student_lessons = StudentsLesson.objects.filter(student=student)
+                    st_lesson = []
+                    for student_lesson in student_lessons:
+                        sl = dict()
+                        sl['uid'] = student_lesson.id
+                        sl['student_id'] = student.id
+                        sl['lesson_id'] = student_lesson.lesson.id
+                        sl['absence'] = student_lesson.absence
+                        sl['key'] = student_lesson.id
+                        st_lesson.append(sl)
+                    s['checkdates'] = st_lesson
+                    student_datas.append(s)
+            d = {'columns':datas,'data':student_datas}
+                # print(lessons)
+            serializer = self.get_serializer(attantion)
+            serializer.data.update(d)
+            print(d)
+            return Response(d)
+        except Exception as e:
+            return Response({'error':"404 or 500"},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
