@@ -11,3 +11,4 @@ router.register(r'student_by_group',views.StudentByGroupViewSet, basename='stude
 router.register(r'payment',views.PaymentViewSet, basename='payment')
 router.register(r'payment_by_student',views.PaymentByStudentViewSet, basename='payment_by_student')
 router.register(r'lesson',views.LessonViewSet, basename='lesson')
+router.register(r'attantion',views.AttantionViewSet, basename='attantion')

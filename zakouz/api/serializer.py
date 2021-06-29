@@ -29,3 +29,7 @@ class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = '__all__'
+class AttantionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Attantion
+        fields = '__all__'

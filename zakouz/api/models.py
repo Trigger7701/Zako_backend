@@ -1,6 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import date,datetime,timedelta
+from django.utils.translation import gettext_lazy
+
+def upload_to(instance,filename):
+    return  f'{filename}'
+
 class Admin(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=200, blank=True, null=False)
@@ -41,8 +46,18 @@ class Student(models.Model):
     group = models.ForeignKey(Group, null=True, on_delete=models.SET_NULL)
     phone = models.CharField(max_length=30, blank=True, null=False)
     email = models.EmailField(max_length=100, null=True)
-    image = models.ImageField(null=True)
+    image = models.ImageField(gettext_lazy('Image'),upload_to=upload_to,null=True)
     description = models.CharField(max_length=2000,null=True)
+    def make_student_lesson(self):
+        if self.group:
+            attantions = Attantion.objects.filter(group=self.group)
+            for attantion in attantions:
+                lessons = Lesson.objects.filter(attantion=attantion)
+                for lesson in lessons:
+                    student_lesson = StudentsLesson(student=self, lesson=lesson)
+                    student_lesson.save()
+
+
     def __str__(self):
         return self.full_name
 class Payment(models.Model):
@@ -86,7 +101,6 @@ class Lesson(models.Model):
         group = Group.objects.get(id = attantion.group.id)
         students = Student.objects.filter(group=group)
         for student in students:
-            
             student_lesson = StudentsLesson(student=student,lesson=self)
             student_lesson.save()
 class StudentsLesson(models.Model):
