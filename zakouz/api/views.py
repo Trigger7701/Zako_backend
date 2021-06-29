@@ -121,6 +121,9 @@ class PaymentByStudentViewSet(viewsets.ModelViewSet):
 class LessonViewSet(viewsets.ModelViewSet):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
+class StudentLessonViewSet(viewsets.ModelViewSet):
+    queryset = StudentsLesson.objects.all()
+    serializer_class = StudentLessonSerializer
 class AttantionViewSet(viewsets.ModelViewSet):
     queryset = Attantion.objects.all()
     serializer_class = LessonSerializer
