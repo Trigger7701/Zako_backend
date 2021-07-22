@@ -1,6 +1,18 @@
 from rest_framework import serializers
 from .models import *
-
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username')
+# Register Serializer
+class RegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+    def create(self, validated_data):
+        user = User.objects.create_user(validated_data['username'], validated_data['password'])
+        return user
 class AdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = Admin
@@ -36,4 +48,8 @@ class AttantionSerializer(serializers.ModelSerializer):
 class StudentLessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentsLesson
+        fields = '__all__'
+class StudentChoiseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentChoise
         fields = '__all__'

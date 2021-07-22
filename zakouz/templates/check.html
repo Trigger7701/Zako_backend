@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+<!--  <style>-->
+<!--      .container {-->
+<!--        border-radius: 5px;-->
+<!--        background-color: #f2f2f2;-->
+<!--        padding: 20px;-->
+<!--        width: 540px;-->
+<!--      }-->
+<!--      .header{-->
+<!--        text-align: center;-->
+<!--        width: 100%;-->
+<!--      }-->
+<!--      .block {-->
+<!--        width: 100%;-->
+<!--        display: flex;-->
+<!--        justify-content: space-between;-->
+<!--        align-items: center;-->
+<!--        border-bottom: 1px dashed black;-->
+<!--      }-->
+<!--      .code_img {-->
+<!--        width: 35%;-->
+<!--      }-->
+<!--      .img-block {-->
+<!--        padding: 30px 0;-->
+<!--        display: flex;-->
+<!--        justify-content: space-between;-->
+<!--      }-->
+<!--      .link_box {-->
+<!--        width: 45%;-->
+<!--        display: flex;-->
+<!--        flex-direction: column;-->
+<!--        justify-content: flex-end;-->
+<!--        align-items: flex-end;-->
+<!--      }-->
+<!--    </style>-->
+</head>
+<body>
+<div class="container">
+      <div class="header">
+        <h1>Zako IT Academy</h1>
+      </div>
+      <div class="header">
+        <h2>To'lov cheki</h2>
+      </div>
+      <div class="block">
+        <h4>F.I.SH.</h4>
+        <p>{{payment.student.full_name}}</p>
+      </div>
+      <div class="block">
+        <h4>Summa (so'm)</h4>
+        <p>{{payment.amount}}</p>
+      </div>
+      <div class="block">
+        <h4>To'lov turi</h4>
+        <p>{{payment.description}}</p>
+      </div>
+      <div class="block">
+        <h4>Adminstrator</h4>
+        <p>{{payment.admin.user.username}}</p>
+      </div>
+      <div class="block">
+        <h4>Sana</h4>
+        <p>{{payment.pay_time}}</p>
+      </div>
+      <div class="img-block">
+        <img
+          class="code_img"
+          src="https://www.kaspersky.ru/content/ru-ru/images/repository/isc/2020/9910/a-guide-to-qr-codes-and-how-to-scan-qr-codes-2.png"
+          alt="QR code"
+        />
+        <div class="link_box">
+          <p>Id: {{payment.id}}</p>
+          <p>More information</p>
+          <p>http://127.0.0.1:8000/payment/{{payment.id}}</p>
+        </div>
+      </div>
+    </div>
+</body>
+</html>

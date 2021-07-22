@@ -16,10 +16,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from .api import router
+from django.views.decorators.csrf import csrf_exempt
+from knox import views as knox_views
+from api import views
 from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
+
+    path('login/', views.LoginAPI.as_view(), name='login'),
+    path('logout/', knox_views.LogoutView.as_view(), name='logout'),
+    path('logoutall/', knox_views.LogoutAllView.as_view(), name='logoutall'),
+    # path('images/',csrf_exempt(views.imageUpload),name='image_upload'),
     path('admin/', admin.site.urls),
+    # path('api-token-auth/', views.obtain_auth_token),
+    path('register/', views.RegisterAPI.as_view(),name='register'),
     # path('',include('api.url')),
     path('',include(router.urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
